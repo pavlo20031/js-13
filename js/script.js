@@ -155,10 +155,9 @@ const account = {
     const { createTransaction, transactions } = account;
     if (amount > account.balance) {
       alert("Недостатньо коштів");
-      return;
+    } else {
+          account.balance -= amount;
     }
-    account.balance -= amount;
-
     const transaction = createTransaction(amount, Transaction.WITHDRAW);
     transactions.push(transaction);
   },
