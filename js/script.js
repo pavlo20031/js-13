@@ -158,25 +158,25 @@ const account = {
     } else {
           account.balance -= amount;
     }
-    const transaction = createTransaction(amount, Transaction.WITHDRAW);
-    transactions.push(transaction);
+    const transaction = this.createTransaction(amount, Transaction.WITHDRAW);
+    this.transactions.push(transaction);
   },
 
   deposit(amount) {
-    const { createTransaction, transactions } = account;
-    account.balance += amount;
+    const { createTransaction, transactions } = this;
+    this.balance += amount;
 
-    const transaction = createTransaction(amount, Transaction.DEPOSIT);
-    transactions.push(transaction);
+    const transaction = this.createTransaction(amount, Transaction.DEPOSIT);
+    this.transactions.push(transaction);
   },
 
   getBalance() {
-    const { balance } = account;
+    const { balance } = this;
     return balance;
   },
 
   getTransactionDetails(id) {
-    const { transactions } = account;
+    const { transactions } = this;
     for (const elem of transactions) {
       if (elem.id === id) {
         return elem;
@@ -186,7 +186,7 @@ const account = {
   },
 
   getTransactionTotal(type) {
-    const { transactions } = account;
+    const { transactions } = this;
     let total = 0;
     for (const elem of transactions) {
       if (elem.type === type) {
