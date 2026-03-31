@@ -84,7 +84,7 @@ const getAllPropValues = (
     { name: n2, price: p2, quantity: q2 },
     { name: n3, price: p3, quantity: q3 },
   ],
-  prop
+  prop,
 ) => {
   let res = [];
   if (prop === "name") {
@@ -100,17 +100,15 @@ const getAllPropValues = (
   return res;
 };
 
-
-
 console.log(getAllPropValues(products, "name"));
 console.log(getAllPropValues(products, "price"));
 // Products
 
 const calculateTotalPrice = (
   [
-    {price: p1, quantity: q1 },
-    {price: p2, quantity: q2 },
-    {price: p3, quantity: q3 },
+    { price: p1, quantity: q1 },
+    { price: p2, quantity: q2 },
+    { price: p3, quantity: q3 },
   ],
   productName,
 ) => {
@@ -122,7 +120,7 @@ const calculateTotalPrice = (
   } else if (productName === "bread") {
     total = p2 * q2;
   } else {
-    return "Продукту не існує"
+    return "Продукту не існує";
   }
   return total;
 };
@@ -132,6 +130,7 @@ console.log(calculateTotalPrice(products, "bread"));
 // Rework lesson 12
 
 // Bank
+
 const Transaction = {
   DEPOSIT: "deposit",
   WITHDRAW: "withdraw",
@@ -145,39 +144,45 @@ const account = {
 
   createTransaction(amount, type) {
     return {
-      id: account.total += 1,
+      id: (this.total += 1),
       type,
       amount,
     };
   },
 
   withdraw(amount) {
-    const { createTransaction, transactions } = account;
-    if (amount > account.balance) {
+    if (amount > this.balance) {
       alert("Недостатньо коштів");
-    } else {
-          account.balance -= amount;
+      return;
+    } else if (amount === 0) {
+      alert("Сума не може бути 0");
+      return;
     }
-    const transaction = this.createTransaction(amount, Transaction.WITHDRAW);
+
+    this.balance -= amount;
+
+    const transaction = this.createTransaction(amount, WITHDRAW);
     this.transactions.push(transaction);
   },
 
   deposit(amount) {
-    const { createTransaction, transactions } = this;
+    if (amount === 0) {
+      alert("Сума не може бути 0");
+      return;
+    }
+
     this.balance += amount;
 
-    const transaction = this.createTransaction(amount, Transaction.DEPOSIT);
+    const transaction = this.createTransaction(amount, DEPOSIT);
     this.transactions.push(transaction);
   },
 
   getBalance() {
-    const { balance } = this;
-    return balance;
+    return this.balance;
   },
 
   getTransactionDetails(id) {
-    const { transactions } = this;
-    for (const elem of transactions) {
+    for (const elem of this.transactions) {
       if (elem.id === id) {
         return elem;
       }
@@ -186,9 +191,8 @@ const account = {
   },
 
   getTransactionTotal(type) {
-    const { transactions } = this;
     let total = 0;
-    for (const elem of transactions) {
+    for (const elem of this.transactions) {
       if (elem.type === type) {
         total += elem.amount;
       }
@@ -197,11 +201,10 @@ const account = {
   },
 };
 
-const { deposit, withdraw, getBalance, transactions, getTransactionTotal } = account;
+account.withdraw(Number(prompt("Введіть число, на скільки хочете зняти")));
+account.deposit(Number(prompt("Введіть число, на скільки хочете поповнити")));
 
-withdraw(Number(prompt("Введіть число, на скільки хочете зняти")));
-deposit(Number(prompt("Введіть число, на скільки хочете поповнити")));
-console.log(getBalance());
-console.log(transactions);
-console.log(getTransactionTotal(DEPOSIT));
-console.log(getTransactionTotal(WITHDRAW));
+console.log("Баланс:", account.getBalance());
+console.log("Історія транзакцій:", account.transactions);
+console.log("Сума поповнень:", account.getTransactionTotal(DEPOSIT));
+console.log("Сума зняття:", account.getTransactionTotal(WITHDRAW));
